@@ -1,8 +1,12 @@
 package com.example.amr.movieapplication.activitie;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -20,6 +24,7 @@ public class MovieActivity extends AppCompatActivity {
     ArrayList<ModelMovie> arrayListMovies;
     CustomMovieAdapter customMovieAdapter;
     SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +33,7 @@ public class MovieActivity extends AppCompatActivity {
 
 
         sharedPreferences = getSharedPreferences("pref_file" , MODE_PRIVATE);
-
+        editor = sharedPreferences.edit();
         gridViewMovies = findViewById(R.id.grid_movies);
         arrayListMovies = new ArrayList<>();
 
@@ -79,5 +84,28 @@ public class MovieActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = new MenuInflater(MovieActivity.this);
+        menuInflater.inflate(R.menu.main_menu , menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:
+                Intent intent = new Intent(MovieActivity.this , LoginActivity.class);
+                startActivity(intent);
+                editor.clear();
+                editor.commit();
+                editor.apply();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
